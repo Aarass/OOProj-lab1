@@ -6,9 +6,10 @@
 class Board
 {
 private:
-	Field* startingField;
-	Field* endingField;
+	Field* m_startingField;
+	Field* m_endingField;
 public:
 	Board();
+	Field* getStartingField();
 };
 

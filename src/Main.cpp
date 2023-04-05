@@ -6,6 +6,18 @@ int main()
 {
 	Board board;
 
+	Field* curr = board.getStartingField();
+	Direction dir = Direction::FORWARD;
+
+
+	std::cout << curr << std::endl;
+	for (int i = 0; i < 76; i++)
+	{
+		curr = curr->nextField(&dir, true);
+		std::cout << typeid( *curr ).name() << std::endl;
+		//std::cout << (1 + i) % 76 << std::endl;
+	}
+
 	/*RegularField* rf1 = new RegularField(FieldEffect::O);
 	RegularField* rf2 = new RegularField(FieldEffect::P);
 	RegularField* rf3 = new RegularField(FieldEffect::H);

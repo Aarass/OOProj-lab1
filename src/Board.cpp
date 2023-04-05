@@ -1,7 +1,7 @@
 #include "Board.h"
 
 Board::Board()
-	: startingField(nullptr)
+	: m_startingField(nullptr)
 {
 	Crossroad** crossroads = new Crossroad * [4];
 	for (int i = 0; i < 4; i++)
@@ -9,7 +9,7 @@ Board::Board()
 	crossroads[1]->shouldChangeDir();
 	crossroads[3]->shouldChangeDir();
 
-	Field* curr = startingField = new RegularField();
+	Field* curr = m_startingField = new RegularField();
 	for (int i = 0; i < 75; i++)
 	{
 		if (i == 10)
@@ -39,8 +39,8 @@ Board::Board()
 			curr = tmp;
 		}
 	}
-	endingField = curr;
-	curr->addNext(startingField);
+	m_endingField = curr;
+	curr->addNext(m_startingField);
 
 	TwoWayField *prev, *next;
 
@@ -72,4 +72,9 @@ Board::Board()
 	}
 	prev->addNext(crossroads[3]);
 	crossroads[3]->addLeft(prev);
+}
+
+Field* Board::getStartingField()
+{
+	return m_startingField;
 }
