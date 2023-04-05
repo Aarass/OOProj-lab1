@@ -86,6 +86,8 @@ Board::Board(const char* filePath)
 	prev->addPrev(crossroads[0]);
 	crossroads[0]->addLeft(prev);
 
+	m_head14 = prev;
+
 	if (effect == FieldEffect::O)
 		m_startingField = prev;
 
@@ -125,10 +127,12 @@ Board::Board(const char* filePath)
 
 	if (effect == FieldEffect::NONE) --emptyCount;
 
-
 	prev = new TwoWayField(effect);
 	prev->addPrev(crossroads[2]);
 	crossroads[2]->addLeft(prev);
+
+	m_head13 = prev;
+
 	if (effect == FieldEffect::O)
 		m_startingField = prev;
 
@@ -153,6 +157,35 @@ Board::Board(const char* filePath)
 	}
 	prev->addNext(crossroads[3]);
 	crossroads[3]->addLeft(prev);
+}
+
+Board::~Board()
+{
+	Direction dir = Direction::FORWARD;
+	Field* curr;
+	Field* tmp;
+
+	curr = m_head14;
+	for (int i = 0; i < 14; i++)
+	{
+		tmp = curr->nextField(nullptr, &dir, 0);
+		delete curr;
+		curr = tmp;
+	}
+	curr = m_head13;
+	for (int i = 0; i < 13; i++)
+	{
+		tmp = curr->nextField(nullptr, &dir, 0);
+		delete curr;
+		curr = tmp;
+	}
+	curr = m_head;
+	for (int i = 0; i < 76; i++)
+	{
+		tmp = curr->nextField(nullptr, &dir, 0);
+		delete curr;
+		curr = tmp;
+	}
 }
 
 Field* Board::getStartingField()

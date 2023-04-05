@@ -6,8 +6,11 @@
 std::ostream& operator<< (std::ostream& out, FieldEffect f);
 int main()
 {
-	Board board("src/assets/Text.txt");
-	Player player;
+	{
+		Board board("src/assets/Text.txt");
+	}
+	int i;
+	/*Player player;
 	player.setCurrentField(board.getStartingField());
 	player.shouldTurn = true;
 
@@ -31,10 +34,9 @@ int main()
 #endif
 			std::cout << player.currentField->getEffect() << std::endl;
 		}
-	}
+	}*/
 
 
-	
 
 	return 0;
 }
