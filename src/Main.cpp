@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Board.h"
 #include "Player.h"
+#include "Dice.h"
 
 std::ostream& operator<< (std::ostream& out, FieldEffect f);
 int main()
@@ -9,42 +10,65 @@ int main()
 	Player player;
 	player.setCurrentField(board.getStartingField());
 
-	for (int i = 0; i < 76; i++)
+	std::cout << "Press enter to roll";
+	while (std::cin.get())
 	{
-		Field* tmp = player.currentField;
-		player.currentField = player.currentField->nextField(player.previousField, &player.direction, player.shouldTurn);
-		player.previousField = tmp;
+		int roll = Dice::Roll();
+		std::cout << roll << std::endl;
+
+		for (int i = 0; i < roll; i++)
+		{
+			Field* tmp = player.currentField;
+			player.currentField = player.currentField->nextField(player.previousField, &player.direction, player.shouldTurn);
+			player.previousField = tmp;
 
 
-		std::cout << typeid(*player.currentField).name() << std::endl;
+			std::cout << typeid(*player.currentField).name() << " ";
+			std::cout << player.currentField->getEffect() << std::endl;
+		}
 	}
+
+
+	
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 std::ostream& operator<< (std::ostream& out, FieldEffect f)
 {
 	switch (f)
 	{
 	case FieldEffect::NONE:
-		out << "None" << std::endl;
+		out << "None";
 		break;
 	case FieldEffect::O:
-		out << "O" << std::endl;
+		out << "O";
 		break;
 	case FieldEffect::P:
-		out << "P" << std::endl;
+		out << "P";
 		break;
 	case FieldEffect::H:
-		out << "H" << std::endl;
+		out << "H";
 		break;
 	case FieldEffect::X:
-		out << "X" << std::endl;
+		out << "X";
 		break;
 	case FieldEffect::S:
-		out << "S" << std::endl;
+		out << "S";
 		break;
 	case FieldEffect::T:
-		out << "T" << std::endl;
+		out << "T";
 		break;
 	default:
 		break;

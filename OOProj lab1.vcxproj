@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="src\Board.h" />
     <ClInclude Include="src\Crossroad.h" />
+    <ClInclude Include="src\Dice.h" />
     <ClInclude Include="src\enums\Direction.h" />
     <ClInclude Include="src\Field.h" />
     <ClInclude Include="src\enums\FieldEffect.h" />
