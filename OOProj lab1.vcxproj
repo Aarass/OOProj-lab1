@@ -136,16 +136,20 @@
     <ClInclude Include="src\enums\Direction.h" />
     <ClInclude Include="src\Field.h" />
     <ClInclude Include="src\enums\FieldEffect.h" />
+    <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayerController.h" />
     <ClInclude Include="src\RegularField.h" />
     <ClInclude Include="src\TwoWayField.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Board.cpp" />
     <ClCompile Include="src\Crossroad.cpp" />
     <ClCompile Include="src\Field.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\PlayerController.cpp" />
     <ClCompile Include="src\RegularField.cpp" />
     <ClCompile Include="src\TwoWayField.cpp" />
   </ItemGroup>
