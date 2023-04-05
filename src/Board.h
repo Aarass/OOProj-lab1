@@ -7,6 +7,7 @@ class Board
 {
 private:
 	Field* startingField;
+	Field* endingField;
 public:
 	Board();
 };

@@ -6,6 +6,8 @@ Board::Board()
 	Crossroad** crossroads = new Crossroad * [4];
 	for (int i = 0; i < 4; i++)
 		crossroads[i] = new Crossroad();
+	crossroads[1]->shouldChangeDir();
+	crossroads[3]->shouldChangeDir();
 
 	Field* curr = startingField = new RegularField();
 	for (int i = 0; i < 75; i++)
@@ -37,17 +39,37 @@ Board::Board()
 			curr = tmp;
 		}
 	}
+	endingField = curr;
 	curr->addNext(startingField);
 
-	Direction dir = Direction::FORWARD;
-	curr = startingField;
-	for (int i = 0; i < 76; i++)
-	{
-		curr = curr->nextField(&dir, false);
-	}
-	if (curr == startingField)
-	{
-		int i = 1;
-	}
+	TwoWayField *prev, *next;
 
+	prev = new TwoWayField();
+	prev->addPrev(crossroads[0]);
+	crossroads[0]->addLeft(prev);
+
+	for (int i = 0; i < 13; i++)
+	{
+		next = new TwoWayField();
+		prev->addNext(next);
+		next->addPrev(prev);
+		prev = next;
+	}
+	prev->addNext(crossroads[1]);
+	crossroads[1]->addLeft(prev);
+
+
+	prev = new TwoWayField();
+	prev->addPrev(crossroads[2]);
+	crossroads[2]->addLeft(prev);
+
+	for (int i = 0; i < 12; i++)
+	{
+		next = new TwoWayField();
+		prev->addNext(next);
+		next->addPrev(prev);
+		prev = next;
+	}
+	prev->addNext(crossroads[3]);
+	crossroads[3]->addLeft(prev);
 }
