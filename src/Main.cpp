@@ -2,7 +2,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "Dice.h"
-//#define DEBUG
+#define DEBUG
 std::ostream& operator<< (std::ostream& out, FieldEffect f);
 int main()
 {
