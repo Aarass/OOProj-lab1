@@ -8,7 +8,7 @@ private:
 	bool m_shouldChangeDir;
 public:
 	Crossroad(FieldEffect effect = FieldEffect::NONE);
-	Field* nextField(Direction* direction, bool shouldTurn);
+	Field* nextField(Field* previousField, Direction* direction, bool shouldTurn);
 
 	void addLeft(Field* left);
 	void shouldChangeDir();

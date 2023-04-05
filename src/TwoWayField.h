@@ -6,7 +6,7 @@ private:
 	Field* m_prev;
 public:
 	TwoWayField(FieldEffect effect = FieldEffect::NONE);
-	Field* nextField(Direction* direction, bool shouldTurn);
+	Field* nextField(Field* previousField, Direction* direction, bool shouldTurn);
 
 	void addPrev(Field* prev);
 };

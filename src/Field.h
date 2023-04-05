@@ -11,6 +11,6 @@ public:
 	FieldEffect getEffect();
 	void addEffect(FieldEffect effect);
 	void addNext(Field* next);
-	virtual Field* nextField(Direction* direction, bool shouldTurn) = 0;
+	virtual Field* nextField(Field* previousField, Direction* direction, bool shouldTurn) = 0;
 };
 

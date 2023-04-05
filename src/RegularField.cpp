@@ -5,7 +5,7 @@ RegularField::RegularField(FieldEffect effect)
 {
 }
 
-Field* RegularField::nextField(Direction* direction, bool shouldTurn)
+Field* RegularField::nextField(Field* previousField, Direction* direction, bool shouldTurn)
 {
     return m_next;
 }

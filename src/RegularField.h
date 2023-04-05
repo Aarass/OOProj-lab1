@@ -4,6 +4,6 @@ class RegularField : public Field
 {
 public:
 	RegularField(FieldEffect effect = FieldEffect::NONE);
-	Field* nextField(Direction* direction, bool shouldTurn);
+	Field* nextField(Field* previousField, Direction* direction, bool shouldTurn);
 };
 

@@ -6,7 +6,7 @@ TwoWayField::TwoWayField(FieldEffect effect)
 {
 }
 
-Field* TwoWayField::nextField(Direction* direction, bool shouldTurn)
+Field* TwoWayField::nextField(Field* previousField, Direction* direction, bool shouldTurn)
 {
 	if (*direction == Direction::FORWARD)
 		return m_next;
