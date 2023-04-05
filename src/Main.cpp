@@ -1,25 +1,22 @@
 #include <iostream>
 #include "Board.h"
+#include "Player.h"
 
 std::ostream& operator<< (std::ostream& out, FieldEffect f);
 int main()
 {
 	Board board;
+	Player player;
+	player.setCurrentField(board.getStartingField());
 
-	Field* curr = board.getStartingField();
-	Field* prev = nullptr;
-	Direction dir = Direction::FORWARD;
-
-	bool shouldTurn = false;
 	for (int i = 0; i < 76; i++)
 	{
-		if (typeid(*curr) == typeid(Crossroad))
-			std::cin >> shouldTurn;
+		Field* tmp = player.currentField;
+		player.currentField = player.currentField->nextField(player.previousField, &player.direction, player.shouldTurn);
+		player.previousField = tmp;
 
-		Field* tmp = curr;
-		curr = curr->nextField(prev, &dir, shouldTurn);
-		prev = tmp;
-		std::cout << typeid(*curr).name() << std::endl;
+
+		std::cout << typeid(*player.currentField).name() << std::endl;
 	}
 
 	return 0;
