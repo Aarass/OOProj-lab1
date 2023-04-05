@@ -1,56 +1,100 @@
 #include "Board.h"
+#include <fstream>
+#include <sstream>
+#include <string>
 
-Board::Board()
+FieldEffect charToFieldEffect(char c);
+Board::Board(const char* filePath)
 	: m_startingField(nullptr)
 {
+	std::string line;
+	std::stringstream ss;
+	std::ifstream fs(filePath);
+	if (!fs.good()) throw;
+
+	getline(fs, line);
+	ss.str(line);
+
+
 	Crossroad** crossroads = new Crossroad * [4];
 	for (int i = 0; i < 4; i++)
 		crossroads[i] = new Crossroad();
 	crossroads[1]->shouldChangeDir();
 	crossroads[3]->shouldChangeDir();
 
-	Field* curr = m_startingField = new RegularField();
+	char c;
+	int emptyCount = 0;
+	ss >> c;
+	if (c == 'e')
+		ss >> emptyCount;
+	FieldEffect effect = charToFieldEffect(c);
+
+	if (effect == FieldEffect::NONE) --emptyCount;
+	Field* curr = m_startingField = new RegularField(effect);
 	for (int i = 0; i < 75; i++)
 	{
-		if (i == 10)
+		if (emptyCount== 0)
 		{
-			curr->addNext(crossroads[0]);
-			curr = crossroads[0];
+			ss >> c;
+			if (c == 'e')
+				ss >> emptyCount;
 		}
-		else if (i == 25)
+		effect = charToFieldEffect(c);
+		if (effect == FieldEffect::NONE) 
+			--emptyCount;
+		if (i == 10 || i == 25 || i == 49 || i == 63)
 		{
-			curr->addNext(crossroads[1]);
-			curr = crossroads[1];
-		}
-		else if (i == 49)
-		{
-			curr->addNext(crossroads[2]);
-			curr = crossroads[2];
-		}
-		else if (i == 63)
-		{
-			curr->addNext(crossroads[3]);
-			curr = crossroads[3];
+			int j;
+			switch (i)
+			{
+				case 10: j = 0; break;
+				case 25: j = 1; break;
+				case 49: j = 2; break;
+				case 63: j = 3; break;
+			}
+			crossroads[j]->addEffect(effect);
+			curr->addNext(crossroads[j]);
+			curr = crossroads[j];
 		}
 		else
 		{
-			RegularField* tmp = new RegularField();
+			RegularField* tmp = new RegularField(effect);
 			curr->addNext(tmp);
 			curr = tmp;
 		}
 	}
-	m_endingField = curr;
 	curr->addNext(m_startingField);
 
+	getline(fs, line);
+	ss.str(line);
+	ss.clear();
 	TwoWayField *prev, *next;
 
-	prev = new TwoWayField();
+	emptyCount = 0;
+	ss >> c;
+	if (c == 'e')
+		ss >> emptyCount;
+	effect = charToFieldEffect(c);
+
+	if (effect == FieldEffect::NONE) --emptyCount;
+
+	prev = new TwoWayField(effect);
 	prev->addPrev(crossroads[0]);
 	crossroads[0]->addLeft(prev);
 
 	for (int i = 0; i < 13; i++)
 	{
-		next = new TwoWayField();
+		if (emptyCount == 0)
+		{
+			ss >> c;
+			if (c == 'e')
+				ss >> emptyCount;
+		}
+		effect = charToFieldEffect(c);
+		if (effect == FieldEffect::NONE)
+			--emptyCount;
+
+		next = new TwoWayField(effect);
 		prev->addNext(next);
 		next->addPrev(prev);
 		prev = next;
@@ -58,14 +102,36 @@ Board::Board()
 	prev->addNext(crossroads[1]);
 	crossroads[1]->addLeft(prev);
 
+	getline(fs, line);
+	ss.str(line);
+	ss.clear();
 
-	prev = new TwoWayField();
+	emptyCount = 0;
+	ss >> c;
+	if (c == 'e')
+		ss >> emptyCount;
+	effect = charToFieldEffect(c);
+
+	if (effect == FieldEffect::NONE) --emptyCount;
+
+
+	prev = new TwoWayField(effect);
 	prev->addPrev(crossroads[2]);
 	crossroads[2]->addLeft(prev);
 
 	for (int i = 0; i < 12; i++)
 	{
-		next = new TwoWayField();
+		if (emptyCount == 0)
+		{
+			ss >> c;
+			if (c == 'e')
+				ss >> emptyCount;
+		}
+		effect = charToFieldEffect(c);
+		if (effect == FieldEffect::NONE)
+			--emptyCount;
+
+		next = new TwoWayField(effect);
 		prev->addNext(next);
 		next->addPrev(prev);
 		prev = next;
@@ -77,4 +143,26 @@ Board::Board()
 Field* Board::getStartingField()
 {
 	return m_startingField;
+}
+FieldEffect charToFieldEffect(char c)
+{
+	switch (c)
+	{
+	case 'e':
+		return FieldEffect::NONE;
+	case 'o':
+		return FieldEffect::O;
+	case 'h':
+		return FieldEffect::H;
+	case 'x':
+		return FieldEffect::X;
+	case 's':
+		return FieldEffect::S;
+	case 't':
+		return FieldEffect::T;
+	case 'p':
+		return FieldEffect::P;
+	default:
+		break;
+	}
 }

@@ -7,9 +7,8 @@ class Board
 {
 private:
 	Field* m_startingField;
-	Field* m_endingField;
 public:
-	Board();
+	Board(const char* filePath);
 	Field* getStartingField();
 };
 
