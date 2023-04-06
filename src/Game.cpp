@@ -39,13 +39,12 @@ void Game::run()
 	{
 		std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " je pobedio!";
 		isGameOver = true;
-		return;
 	}
 	std::cout << std::endl;
 	print();
 
 	m_indexOfCurrentPlayer = (m_indexOfCurrentPlayer + 1) % m_numberOfPlayers;
-	std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
+	if(!isGameOver) std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
 
 	std::cout << std::endl;
 }
