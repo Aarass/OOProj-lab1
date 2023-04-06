@@ -94,8 +94,8 @@ void Game::moveCurrentPlayer(int amount)
 	case FieldEffect::X:
 		player.undoMove();
 		m_scores[m_indexOfCurrentPlayer] = previousScore;
-
-		if (player.alreadySteppedOnH)
+		if (amount == 1 || amount == 2) break;
+		if (player.alreadySteppedOnX)
 		{
 			player.alreadySteppedOnX = false;
 			moveCurrentPlayer((amount / 2 + 1) / 2 + 1);
@@ -228,7 +228,7 @@ void Game::print()
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			std::cout << mat[i][j];
+			std::cout << mat[i][j] << ' ';
 		}
 		std::cout << std::endl;
 	}
