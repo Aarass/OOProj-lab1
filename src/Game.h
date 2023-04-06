@@ -11,10 +11,14 @@ private:
 	int* m_scores;
 	int m_indexOfCurrentPlayer;
 	int m_numberOfPlayers;
+
+	int m_k;
 public:
-	Game(const char* filePath, int numberOfPlayers);
+	bool isGameOver;
+	Game(const char* filePath, int numberOfPlayers, int k);
 	~Game();
 	void run();
 	void moveCurrentPlayer(int amount);
+	void print();
 };
 

@@ -192,6 +192,18 @@ Field* Board::getStartingField()
 {
 	return m_startingField;
 }
+Field* Board::getHead()
+{
+	return m_head;
+}
+Field* Board::getHead14()
+{
+	return m_head14;
+}
+Field* Board::getHead13()
+{
+	return m_head13;
+}
 FieldEffect charToFieldEffect(char c)
 {
 	switch (c)

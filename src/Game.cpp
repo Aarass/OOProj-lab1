@@ -1,13 +1,16 @@
 #include "Game.h"
 #include "Dice.h"
-std::ostream& operator<< (std::ostream& out, FieldEffect f);
+std::ostream& operator<< (std::ostream& out, FieldEffect f); 
+char toChar(FieldEffect f);
 
-Game::Game(const char* filePath, int numberOfPlayers)
+Game::Game(const char* filePath, int numberOfPlayers, int k)
 	: m_board(filePath)
 	, m_players(nullptr)
 	, m_scores(nullptr)
 	, m_numberOfPlayers(numberOfPlayers)
 	, m_indexOfCurrentPlayer(0)
+	, m_k(k)
+	, isGameOver(false)
 {
 
 	m_players = new Player[m_numberOfPlayers];
@@ -26,16 +29,27 @@ Game::~Game()
 
 void Game::run()
 {
-	int roll = Dice::Roll();
-	std::cout << roll << std::endl;
-	moveCurrentPlayer(roll);
+	std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
 
+	int roll = Dice::Roll();
+	//int roll; std::cin >> roll;
+	std::cout << roll << std::endl;
+
+	moveCurrentPlayer(roll);
+	if (m_scores[m_indexOfCurrentPlayer] >= m_k)
+	{
+		std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " je pobedio!";
+		isGameOver = true;
+	}
+	//std::system("cls"); print();
+	m_indexOfCurrentPlayer = (m_indexOfCurrentPlayer + 1) % m_numberOfPlayers;
+
+	std::cout << std::endl;
 }
 
 void Game::moveCurrentPlayer(int amount)
 {
 	Player& player = m_players[m_indexOfCurrentPlayer];
-
 	//Previous stats;
 	player.makeBackup();
 	int previousScore = m_scores[m_indexOfCurrentPlayer];
@@ -106,9 +120,139 @@ void Game::moveCurrentPlayer(int amount)
 	default:
 		break;
 	}
-	m_indexOfCurrentPlayer = (m_indexOfCurrentPlayer + 1) % m_numberOfPlayers;
 }
 
+void Game::print()
+{
+	char mat[20][20];
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			mat[i][j] = ' ';
+		}
+	}
+	Field* curr = m_board.getHead();
+	Direction dir = Direction::FORWARD;
+
+	for (int i = 0; i < 19; i++)
+	{
+		mat[i][0] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[i][0] = '0' + j + 1;
+
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	for (int i = 0; i < 19; i++)
+	{
+		mat[19][i] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[19][i] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	for (int i = 0; i < 19; i++)
+	{
+		mat[19-i][19] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[19-i][19] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	for (int i = 0; i < 19; i++)
+	{
+		mat[0][19-i] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[0][19-i] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	curr = m_board.getHead13();
+	for (int i = 0; i < 7; i++)
+	{
+		mat[7][18 - i] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[7][18 - i] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		mat[1+i][12] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[1+i][12] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+
+	curr = m_board.getHead14();
+	for (int i = 0; i < 7; i++)
+	{
+		mat[11][1 + i] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[11][1 + i] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+	for (int i = 0; i < 7; i++)
+	{
+		mat[12 + i][7] = toChar(curr->getEffect());
+
+		for (int j = 0; j < m_numberOfPlayers; j++)
+			if (m_players[j].currentField == curr)
+				mat[12 + i][7] = '0' + j + 1;
+
+		curr = curr->nextField(nullptr, &dir, false);
+	}
+
+
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			std::cout << mat[i][j];
+		}
+		std::cout << std::endl;
+	}
+}
+
+char toChar(FieldEffect f)
+{
+	switch (f)
+	{
+	case FieldEffect::NONE:
+		return '.';
+	case FieldEffect::O:
+		return 'o';
+	case FieldEffect::P:
+		return 'p';
+	case FieldEffect::H:
+		return 'h';
+	case FieldEffect::X:
+		return 'x';
+	case FieldEffect::S:
+		return 's';
+	case FieldEffect::T:
+		return 't';
+	default:
+		break;
+	}
+}
 std::ostream& operator<< (std::ostream& out, FieldEffect f)
 {
 	switch (f)

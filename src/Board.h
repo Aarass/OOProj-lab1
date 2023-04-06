@@ -14,5 +14,8 @@ public:
 	Board(const char* filePath);
 	~Board();
 	Field* getStartingField();
+	Field* getHead();
+	Field* getHead14();
+	Field* getHead13();
 };
 
