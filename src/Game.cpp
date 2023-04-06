@@ -29,7 +29,6 @@ Game::~Game()
 
 void Game::run()
 {
-	std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
 
 	int roll = Dice::Roll();
 	//int roll; std::cin >> roll;
@@ -41,8 +40,9 @@ void Game::run()
 		std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " je pobedio!";
 		isGameOver = true;
 	}
-	//std::system("cls"); print();
+	std::system("cls"); print();
 	m_indexOfCurrentPlayer = (m_indexOfCurrentPlayer + 1) % m_numberOfPlayers;
+	std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
 
 	std::cout << std::endl;
 }
