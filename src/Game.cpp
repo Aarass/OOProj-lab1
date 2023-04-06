@@ -29,7 +29,7 @@ Game::~Game()
 
 void Game::run()
 {
-
+	std::system("cls");
 	int roll = Dice::Roll();
 	//int roll; std::cin >> roll;
 	std::cout << roll << std::endl;
@@ -39,8 +39,11 @@ void Game::run()
 	{
 		std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " je pobedio!";
 		isGameOver = true;
+		return;
 	}
-	std::system("cls"); print();
+	std::cout << std::endl;
+	print();
+
 	m_indexOfCurrentPlayer = (m_indexOfCurrentPlayer + 1) % m_numberOfPlayers;
 	std::cout << "Player " << m_indexOfCurrentPlayer + 1 << " na potezu "; std::cin.get();
 
@@ -61,7 +64,7 @@ void Game::moveCurrentPlayer(int amount)
 		player.currentField = player.currentField->nextField(player.previousField, &player.direction, player.shouldTurn);
 		player.previousField = tmp;
 
-		std::cout << player.currentField->getEffect() << std::endl;
+		std::cout << player.currentField->getEffect() <<  " ";
 
 		if (player.currentField->getEffect() == FieldEffect::O)
 			++m_scores[m_indexOfCurrentPlayer];
